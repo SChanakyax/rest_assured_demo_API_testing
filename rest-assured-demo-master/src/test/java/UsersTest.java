@@ -108,7 +108,7 @@ public class UsersTest {
                 .body("data.gender", equalTo(gender))
                 .body("data.status", equalTo(status));
     }
-
+/*
     @Test
     public void testStatus_code(){
         System.out.println("testStatus_code() running");
@@ -121,7 +121,7 @@ public class UsersTest {
 
             System.out.println("Response is :-" + response);
     }
-
+*/
     @AfterClass
     public void removeUser() {
         given()
