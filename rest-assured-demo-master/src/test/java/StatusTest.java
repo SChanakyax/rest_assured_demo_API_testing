@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 
 import javax.xml.ws.Response;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
@@ -61,8 +62,11 @@ public class StatusTest {
 
     }
 
+    //Check for 200 and insert data to hashmap
     @Test()
     public void testOutputName() {
+
+        boolean key_value_pair = false;
 
         // System.out.println(requestSpecification_maxSoft);
         //Validate The response
@@ -97,17 +101,30 @@ public class StatusTest {
         //Loop through the array and get each element.
 
 
-        
+        HashMap<String, String> jsondata_map = new HashMap<String, String>();
+
+        // Add keys and values (Country, City)
+
+
+
         for (int i = 0; i < jsonArray.size(); i++) {
             JsonObject jsonObject = jsonArray.get(i).getAsJsonObject();
-            System.out.println(jsonObject.get("name").getAsString());
+            jsondata_map.put(jsonObject.get("status").getAsString(),jsonObject.get("name").getAsString());
 
+            System.out.println(jsondata_map);
+        }
 
+        if (jsondata_map.containsKey("Completed")) {
+            if(jsondata_map.containsValue("Mock service implementation using Express")){
+                key_value_pair = true;
+            }
+
+        } else {
+            key_value_pair = false;
         }
 
 
-
-  /**/
+       System.out.println("Final test output >>>" + key_value_pair);
     }
 }
 
