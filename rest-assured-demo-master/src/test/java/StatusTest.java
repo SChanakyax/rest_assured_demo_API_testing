@@ -5,8 +5,11 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.specification.RequestSpecification;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.testng.asserts.Assertion;
 
 import javax.xml.ws.Response;
 import java.util.ArrayList;
@@ -63,10 +66,10 @@ public class StatusTest {
     }
 
     //Check for 200 and insert data to hashmap
-    @Test()
+    @Test
     public void testOutputName() {
 
-        boolean key_value_pair = false;
+       boolean key_value_pair = false;
 
         // System.out.println(requestSpecification_maxSoft);
         //Validate The response
@@ -96,36 +99,36 @@ public class StatusTest {
                 .basePath("tasks")
                 .get().as(JsonArray.class);
 */
-        JsonArray jsonArray = given().spec(requestSpecification_maxSoft).get(Constants.USERS_ENDPOINT_maxSoft).as(JsonArray.class);
-
         //Loop through the array and get each element.
-
 
         HashMap<String, String> jsondata_map = new HashMap<String, String>();
 
-        // Add keys and values (Country, City)
-
-
-
+        JsonArray jsonArray = given().spec(requestSpecification_maxSoft).get(Constants.USERS_ENDPOINT_maxSoft).as(JsonArray.class);
+        System.out.println(jsonArray);
         for (int i = 0; i < jsonArray.size(); i++) {
-            JsonObject jsonObject = jsonArray.get(i).getAsJsonObject();
+           JsonObject jsonObject = jsonArray.get(i).getAsJsonObject();
             jsondata_map.put(jsonObject.get("status").getAsString(),jsonObject.get("name").getAsString());
 
-            System.out.println(jsondata_map);
+           System.out.println(jsondata_map +""+ jsonArray.size());
+
+          //  System.out.println(jsonObject.get("status").getAsString());
+
         }
 
         if (jsondata_map.containsKey("Completed")) {
             if(jsondata_map.containsValue("Mock service implementation using Express")){
-                key_value_pair = true;
+                key_value_pair= true;
             }
 
         } else {
-            key_value_pair = false;
+            key_value_pair= false;
         }
 
+        //checkResult( key_value_pair);
+        System.out.println("The status;'completed' and name: 'Mock service implementation using Express'  >>>" + key_value_pair);
 
-       System.out.println("Final test output >>>" + key_value_pair);
     }
+
 }
 
 
